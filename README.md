@@ -170,13 +170,12 @@ An independent review pass over the module and the binding (fresh context, no ac
 - The periodic report could miss changes that arrived after the last submission: it now gates on every counter.
 - Smaller items: 32-bit overflow in the byte bounds, a queue-bytes floor below the document cap, an unreachable error branch, a dead field, byte-preserving annotation with sjson, a linear reject lookup, naming and interface assertion, and five new tests.
 
+A third pass audited the framework contracts by reading the executor, config loader and account code, and probed the module with hostile input. It found that the documented examples lacked `enabled: true` (the builder skips a module without it), that a YAML loader lowercases keys and splits them on dots so an object keyed by rule id never reaches the module intact, that a bidder could plant its own `vastlint` key in `ext` on any path the module did not annotate, that non-UTF-8 markup counted as an engine error, that whitespace before the XML declaration was a parse error, and that a creative built to be expensive (thousands of elements) can cost 20 ms on its own. All of it is fixed or documented and tested: the README blocks now run through Prebid Server's loader, builder and plan builder in a test; `rules` accepts loader-safe forms and ids resolve case-insensitively; the module strips bidder-supplied verdict keys everywhere; invalid UTF-8 is skipped before the engine; the document is trimmed before validation; the hook stops validating once its deadline has passed; and the summary carries the document type and version.
+
 A second pass checked the module against the in-tree modules and Prebid's module guide: the README's execution plan is now a YAML mapping that Prebid Server's config loader accepts (a JSON string there fails at startup); config parsing uses `jsonutil` like the other modules; the analytics activity is `vast_validation` with `success-modify` on annotated bids; engine failures produce one hook warning per response instead of an error per bid; the periodic counters log is opt-in; the dead `enabled` field is gone; the shutdown-under-load test carries the `TestRace` prefix so `validate.sh --race` runs it; and the wasm engine returns a clean error instead of panicking on architectures without a compiler backend (vastlint-go v0.16.2).
 
 ## Where the raw data is
 
-- `runs/*.json`: every Linux run, with per-second samples, the hook trace outcomes, the finding counts per rule and the computed analysis. File names carry the run name (`lx1-off`, `lx1-off-path-cache`, `lx1-on-path-cache` and so on for the three rounds; `lx*-off-1bid-c8` and `lx*-monitor-cache-1bid-c8` for the single-bid pairs; `lx-reject-mixed-cache-c8`; `lx-timeout-1ms-cache`, `lx-oversize-cache`, `lx-malformed-reject-cache`; `lx-soak-on-path-cache-10min`).
-- `reports/linux-bench-docker.txt`: the container benchmark output, both engines.
-- `reports/ENGINE-RC-SUMMARY-20261024.md`: the engine-level regression and benchmark report for the 0.16.0 release candidate.
-- `screenshots/`: the six dashboard captures listed above.
-
-The rig itself (fake bidder, load driver, dashboard, container scripts) lives with the vastlint evaluation tooling and is not part of this folder. No creative markup is stored here.
+- Per-run JSON with per-second samples and the computed analysis: `results/pbs/dashboard-linux/*.json` (the rig: `harness/pbs-rig/`, Linux container script `harness/linux/run-linux.sh`, dashboard on port 7071).
+- Container benchmarks: `results/pbs/linux-bench-docker.txt`.
+- Engine-level regression and benchmark report for the 0.16.0 release candidate: `reports/ENGINE-RC-SUMMARY-20261024.md`.
