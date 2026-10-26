@@ -1,0 +1,31 @@
+== host
+aarch64
+8
+go version go1.25.14 linux/arm64
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+== module tests, wasm engine, race
+ok  	github.com/prebid/prebid-server/v4/modules/vastlint/validation	10.255s
+== module tests, native engine, race
+ok  	github.com/prebid/prebid-server/v4/modules/vastlint/validation	1.210s
+== module benchmarks, wasm engine
+BenchmarkHookCacheHit-8     	   25964	     90704 ns/op	  279974 B/op	     979 allocs/op
+BenchmarkHookRealEngine/bids=1/engine=wasm-8         	   49120	     42781 ns/op	   10312 B/op	     155 allocs/op
+BenchmarkHookRealEngine/bids=20/engine=wasm-8        	    6300	    327617 ns/op	  202485 B/op	    2978 allocs/op
+ok  	github.com/prebid/prebid-server/v4/modules/vastlint/validation	8.155s
+== module benchmarks, native engine
+BenchmarkHookCacheHit-8     	   23533	     92868 ns/op	  279973 B/op	     979 allocs/op
+BenchmarkHookRealEngine/bids=1/engine=cgo-8         	   41044	     56425 ns/op	   12145 B/op	     150 allocs/op
+BenchmarkHookRealEngine/bids=20/engine=cgo-8        	    6784	    356637 ns/op	  239137 B/op	    2878 allocs/op
+ok  	github.com/prebid/prebid-server/v4/modules/vastlint/validation	8.600s
+== vastlint-go tests and benchmarks, wasm engine
+ok  	github.com/aleksUIX/vastlint-go	2.794s
+BenchmarkValidateSmall-8           	   58378	     39658 ns/op	  13.79 MB/s	    7000 B/op	      76 allocs/op
+BenchmarkValidateLarge-8           	     834	   2636334 ns/op	  91.37 MB/s	  111961 B/op	     217 allocs/op
+BenchmarkValidateSmallParallel-8   	  248835	      9169 ns/op	    6124 B/op	      75 allocs/op
+ok  	github.com/aleksUIX/vastlint-go	11.634s
+== vastlint-go tests and benchmarks, native engine
+ok  	github.com/aleksUIX/vastlint-go	0.333s
+BenchmarkValidateSmall-8           	   47209	     51395 ns/op	  10.64 MB/s	    7692 B/op	      70 allocs/op
+BenchmarkValidateLarge-8           	    2858	    798489 ns/op	 301.68 MB/s	   15183 B/op	     118 allocs/op
+BenchmarkValidateSmallParallel-8   	  213122	     10901 ns/op	    7689 B/op	      70 allocs/op
+ok  	github.com/aleksUIX/vastlint-go	7.756s
