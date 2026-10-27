@@ -147,7 +147,7 @@ Reading: the fail-open contract holds under a budget twenty times tighter than t
 
 ### Continuous integration
 
-The fork carries a workflow that builds Prebid Server with the module on ubuntu-latest under Go 1.25 and 1.26, runs the module tests with the race detector under both engines (native library installed from the vastlint v0.16.0 release tarball), runs the vastlint-go parity suite, and prints the benchmarks: https://github.com/aleksUIX/prebid-server/actions/runs/40268500383, every step green. `./validate.sh --nofmt --cov --race 10`, the upstream CI command, passes on the full repository.
+The fork carries a workflow that builds Prebid Server with the module on ubuntu-latest under Go 1.25 and 1.26, runs the module tests with the race detector under both engines (native library installed from the vastlint v0.16.0 release tarball), runs the vastlint-go parity suite, and prints the benchmarks: https://github.com/aleksUIX/prebid-server/actions/runs/40451223391, every step green. `./validate.sh --nofmt --cov --race 10`, the upstream CI command, passes on the full repository.
 
 ## Screenshots
 
